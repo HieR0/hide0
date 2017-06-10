@@ -40,7 +40,7 @@ import jfxtras.labs.scene.layout.ScalableContentPane;
 
 public class Main extends Application {
     private Desktop desktop = Desktop.getDesktop();
-    TrivialSteg model = new TrivialSteg();
+    private TrivialSteg model = new TrivialSteg();
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("layout.fxml"));
@@ -70,16 +70,13 @@ public class Main extends Application {
 //        scaledPane.getChildren().add(iv);
 //        scaledPane.prefHeight(453.0);
 //        scaledPane.prefWidth(496.0);
-        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-            public void changed(ObservableValue<? extends Toggle> ov,
-                                Toggle old_toggle, Toggle new_toggle) {
-                if (group.getSelectedToggle().equals(b)) {
-                    model.setTypeOfFile("jpg");
-                } else if(group.getSelectedToggle().equals(b2)) {
-                    model.setTypeOfFile("png");
-                } else if(group.getSelectedToggle().equals(b3)){
-                    model.setTypeOfFile("bmp");
-                }
+        group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
+            if (group.getSelectedToggle().equals(b)) {
+                model.setTypeOfFile("jpg");
+            } else if(group.getSelectedToggle().equals(b2)) {
+                model.setTypeOfFile("png");
+            } else if(group.getSelectedToggle().equals(b3)){
+                model.setTypeOfFile("bmp");
             }
         });
         b.setToggleGroup(group);
@@ -102,87 +99,82 @@ public class Main extends Application {
         fileChooser.getExtensionFilters().add(extFilter);
 
         btn.setOnAction(
-                new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        File file = fileChooser.showOpenDialog(primaryStage);
-                        if (file != null) {
-                            String text = tf.getText();
-                            if(text.equals("")) {
-                                Alert alert = new Alert(Alert.AlertType.WARNING);
-                                alert.setTitle("Warning");
-                                alert.setHeaderText("You haven't defined the hidden data.");
-                                Label label = new Label("Define it here:");
+                e -> {
+                    File file = fileChooser.showOpenDialog(primaryStage);
+                    if (file != null) {
+                        String text = tf.getText();
+                        if(text.equals("")) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Warning");
+                            alert.setHeaderText("You haven't defined the hidden data.");
+                            Label label = new Label("Define it here:");
 
-                                TextArea textArea = new TextArea();
-                                textArea.setEditable(true);
-                                textArea.setWrapText(true);
-                                textArea.setMaxWidth(Double.MAX_VALUE);
-                                textArea.setMaxHeight(Double.MAX_VALUE);
-                                GridPane.setVgrow(textArea, Priority.ALWAYS);
-                                GridPane.setHgrow(textArea, Priority.ALWAYS);
-                                GridPane expContent = new GridPane();
-                                expContent.setMaxWidth(Double.MAX_VALUE);
-                                expContent.add(label, 0, 0);
-                                expContent.add(textArea, 0, 1);
-                                alert.getDialogPane().setContent(expContent);
-                                alert.showAndWait();
-                                text = textArea.getText();
-                            }
-
-                            String ext  = Utils.getExtension(file);
-                            String name = file.getName();
-                            String path = file.getPath();
-                            path = path.substring(0,path.length()-name.length()-1);
-                            name = name.substring(0, name.length()-4);
-                            String stegan = name + "-code";
-
-                            if(model.getTypeOfFile().equals("jpg")) {
-                                EncodeToJPG.encodeFile(path+"\\"+name+"."+ext, text);
-                            } else {
-                                model.encodeFile(path,name,ext,stegan,text);
-                            }
-
-                            Image img = null;
-                            try {
-                                img = new Image(file.toURI().toURL().toExternalForm());
-                            } catch (MalformedURLException e1) {
-                                e1.printStackTrace();
-                            }
-                            iv.setImage(img);
-                            tf.clear();
-                            tex.setText("Data to be encoded:");
+                            TextArea textArea = new TextArea();
+                            textArea.setEditable(true);
+                            textArea.setWrapText(true);
+                            textArea.setMaxWidth(Double.MAX_VALUE);
+                            textArea.setMaxHeight(Double.MAX_VALUE);
+                            GridPane.setVgrow(textArea, Priority.ALWAYS);
+                            GridPane.setHgrow(textArea, Priority.ALWAYS);
+                            GridPane expContent = new GridPane();
+                            expContent.setMaxWidth(Double.MAX_VALUE);
+                            expContent.add(label, 0, 0);
+                            expContent.add(textArea, 0, 1);
+                            alert.getDialogPane().setContent(expContent);
+                            alert.showAndWait();
+                            text = textArea.getText();
                         }
+
+                        String ext  = Utils.getExtension(file);
+                        String name = file.getName();
+                        String path = file.getPath();
+                        path = path.substring(0,path.length()-name.length()-1);
+                        name = name.substring(0, name.length()-4);
+                        String stegan = name + "-code";
+
+                        if(model.getTypeOfFile().equals("jpg")) {
+                            EncodeToJPG.encodeFile(path+"\\"+name+"."+ext, text);
+                        } else {
+                            model.encodeFile(path,name,ext,stegan,text);
+                        }
+
+                        Image img = null;
+                        try {
+                            img = new Image(file.toURI().toURL().toExternalForm());
+                        } catch (MalformedURLException e1) {
+                            e1.printStackTrace();
+                        }
+                        iv.setImage(img);
+                        tf.clear();
+                        tex.setText("Data to be encoded:");
                     }
                 });
 
         btn2.setOnAction(
-                new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        File file = fileChooser.showOpenDialog(primaryStage);
-                        if (file != null) {
-                            String ext  = Utils.getExtension(file);
-                            String name = file.getName();
-                            String path = file.getPath();
-                            path = path.substring(0,path.length()-name.length()-1);
-                            name = name.substring(0, name.length()-4);
+                e -> {
+                    File file = fileChooser.showOpenDialog(primaryStage);
+                    if (file != null) {
+                        String ext  = Utils.getExtension(file);
+                        String name = file.getName();
+                        String path = file.getPath();
+                        path = path.substring(0,path.length()-name.length()-1);
+                        name = name.substring(0, name.length()-4);
 
-                            if(ext.equals("jpg")) {
-                                tf.setText(DecodeFromJPG.decodeFile(path+"\\"+name+"."+ext));
-                            } else {
-                                tf.setText(model.decodeFile(path, name, ext));
-                            }
-
-                            Image img = null;
-                            try {
-                                img = new Image(file.toURI().toURL().toExternalForm());
-                            } catch (MalformedURLException e1) {
-                                e1.printStackTrace();
-                            }
-                            iv.setImage(img);
-                            tex.setText("Decoded data:");
+                        if(ext.equals("jpg")) {
+                            DecodeFromJPG.resetTemps();
+                            tf.setText(DecodeFromJPG.decodeFile(path+"\\"+name+"."+ext));
+                        } else {
+                            tf.setText(model.decodeFile(path, name, ext));
                         }
+
+                        Image img = null;
+                        try {
+                            img = new Image(file.toURI().toURL().toExternalForm());
+                        } catch (MalformedURLException e1) {
+                            e1.printStackTrace();
+                        }
+                        iv.setImage(img);
+                        tex.setText("Decoded data:");
                     }
                 });
 

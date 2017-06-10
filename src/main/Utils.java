@@ -23,6 +23,7 @@ public class Utils {
     public static void infoDialog(String info) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
         alert.setContentText(info);
         alert.show();
     }

@@ -34,6 +34,8 @@ package libs;
 // added method rawDecode
 //
 
+import main.Utils;
+
 import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -314,7 +316,9 @@ public class HuffmanDecode {
 
         // Calculate the Number of blocks encoded
         // warum doppelt so viel?
-
+        if(getBlockCount() == 0) {
+            return new int[0];
+        }
         final int buff[] = new int[2 * 8 * 8 * getBlockCount()];
         int pos = 0;
         int MCUCount = 0;

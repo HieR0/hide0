@@ -124,7 +124,7 @@ public class TrivialSteg
 
     private byte[] encodeText(byte[] image, byte[] addition, int offset)
     {
-        Utils.infoDialog("Maximum size of data: " + ((image.length/1024)/8) + " bytes");
+        Utils.infoDialog("Maximum size of data: " + (image.length) + " bytes");
 
         if(addition.length + offset > image.length)
         {

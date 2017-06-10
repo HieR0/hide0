@@ -1,0 +1,9 @@
+﻿Projekt - Steganografia
+Link do githuba: https://github.com/HieR0/hide0
+Aplikacja została napisana w JavieFx.
+W jej funkcjonalność wchodzi kodowanie i dekodowanie stringów do i z plikow obrazów.
+Aplikacja ma możliwość zapisu do plikow .png, .bmp oraz .jpg.
+Wylicza rownież maksymalną wartość bajtow możliwych do zapisania dla konkretnego obrazu.
+W celu konwersji danych do zakodowania do formatu .jpg aplikacja korzysta z biblioteki JPEG Encoder i algorytmu F5.
+Nowe pliki zapisywane są w folderze pliku oryginalnego o tej samej nazwie z końcówką "-code.ext".
+Projekt wykonany przez Jakub Rodasik.
